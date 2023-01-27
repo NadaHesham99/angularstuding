@@ -1,0 +1,7 @@
+<img *ngIf="this.toggleImage" class="img-fluid m-1" [src]="storeData.image" >
+<button class="btn btn-primary" (click)="toggleImageFun()">Toggle</button>
+<h1>{{storeData.name}}</h1>
+
+<ul>
+    <li *ngFor="let item of storeData.branches">{{item}}</li>
+</ul>
