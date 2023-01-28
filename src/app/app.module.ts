@@ -12,6 +12,8 @@ import { SidebarComponent } from './Components/sidebar/sidebar.component';
 import { FooterComponent } from './Components/footer/footer.component';
 import { ProductListComponent } from './Components/Order/product-list/product-list.component';
 import { FormsModule } from '@angular/forms';
+import { LightBoxDirective } from './Directives/light-box.directive';
+import { USDtoEGYPipe } from './Pipes/usdto-egy.pipe';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { FormsModule } from '@angular/forms';
     HomeComponent,
     SidebarComponent,
     FooterComponent,
-    ProductListComponent
+    ProductListComponent,
+    LightBoxDirective,
+    USDtoEGYPipe
   ],
   imports: [
     BrowserModule,
