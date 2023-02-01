@@ -9,9 +9,14 @@ import { IProduct } from 'src/app/Models/iproduct';
 })
 export class ProductListComponent implements OnInit {
   prodList:IProduct[];
-  catList:ICategory[];
-  selectedCategoryID:number=0;
+  //catList:ICategory[];
+  //selectedCategoryID:number=0;
   OrderTotalPrice:number = 0;
+ 
+  ReceivedselectedCategoryID:number=0;
+
+
+
   constructor() { 
     this.prodList = [
       {id:100,name:'Lenevo ThinqPad Laptop' , price:100000000,quantity:3,imageURL:'https://fakeimg.pl/200x100/',categoryId:1},
@@ -21,18 +26,18 @@ export class ProductListComponent implements OnInit {
       {id:500,name:'Lenevo Tab2' , price:503030500,quantity:0,imageURL:'https://fakeimg.pl/200x100/',categoryId:3},
       {id:600,name:'MAC Tablet' , price:20400500,quantity:1,imageURL:'https://fakeimg.pl/200x100/',categoryId:3}
     ]
-    this.catList=[
-      {id:1 , name:"Laptops"},
-      {id:2, name:"Tablet"},
-      {id:3,name:"Mobile"}
-    ]
+    // this.catList=[
+    //   {id:1 , name:"Laptops"},
+    //   {id:2, name:"Tablet"},
+    //   {id:3,name:"Mobile"}
+    // ]
   }
 
   ngOnInit(): void {
   }
   buy(prdPrice:any , count:any){
     //let itemCount:number = +count; //to convert count of type any to type number
-      this.OrderTotalPrice = +prdPrice * +count;
+    this.OrderTotalPrice = +prdPrice * +count;
   }
   prdTrackByFn(index:number , prd:IProduct):number{
     return prd.id;
