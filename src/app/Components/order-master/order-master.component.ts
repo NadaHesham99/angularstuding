@@ -20,5 +20,7 @@ export class OrderMasterComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  UpdateTotalprice(totalPrice:number){
+    this.receviedOrderTotalPrice = totalPrice;
+  }
 }

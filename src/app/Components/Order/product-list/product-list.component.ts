@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ICategory } from 'src/app/Models/icategory';
 import { IProduct } from 'src/app/Models/iproduct';
 
@@ -7,17 +7,20 @@ import { IProduct } from 'src/app/Models/iproduct';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
-export class ProductListComponent implements OnInit {
-  prodList:IProduct[];
+export class ProductListComponent implements OnInit , OnChanges{
+  private prodList:IProduct[];
+  prdCatList :IProduct[] =[];
   //catList:ICategory[];
   //selectedCategoryID:number=0;
   OrderTotalPrice:number = 0;
+  @Output() OnTotalPriceChanges : EventEmitter<number>;
  
-  ReceivedselectedCategoryID:number=0;
+  @Input() ReceivedselectedCategoryID:number=0;
 
 
 
   constructor() { 
+    this.OnTotalPriceChanges = new EventEmitter<number>();
     this.prodList = [
       {id:100,name:'Lenevo ThinqPad Laptop' , price:100000000,quantity:3,imageURL:'https://fakeimg.pl/200x100/',categoryId:1},
       {id:200,name:'HP Laptop' , price:6040505050,quantity:0,imageURL:'https://fakeimg.pl/200x100/',categoryId:1},
@@ -32,12 +35,22 @@ export class ProductListComponent implements OnInit {
     //   {id:3,name:"Mobile"}
     // ]
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    if(this.ReceivedselectedCategoryID == 0){
+      this.prdCatList = this.prodList
+    }
+    else{
+      this.prdCatList = this.prodList.filter(prd=> prd.categoryId == this.ReceivedselectedCategoryID);
+    }
+  }
 
   ngOnInit(): void {
   }
   buy(prdPrice:any , count:any){
     //let itemCount:number = +count; //to convert count of type any to type number
     this.OrderTotalPrice = +prdPrice * +count;
+
+    this.OnTotalPriceChanges.emit(this.OrderTotalPrice);
   }
   prdTrackByFn(index:number , prd:IProduct):number{
     return prd.id;
