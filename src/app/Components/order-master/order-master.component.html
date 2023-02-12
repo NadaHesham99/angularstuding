@@ -1,4 +1,8 @@
 <h1>Make a Order</h1>
+<!-- <div class="mb-3">
+    <label for="clientname" class="form-label">Client Name</label>
+    <input class="form-control" name="clientname" #clientname>
+</div> -->
 
 <div class="mb-3">
     <label for="cat" class="form-label">Select Category</label>
@@ -15,8 +19,36 @@
 <hr>
 
 <div class="bg-warning">
-    <app-product-list [ReceivedselectedCategoryID] ="selectCateID" (OnTotalPriceChanges)="UpdateTotalprice($event)"></app-product-list>
+    <!-- <app-product-list [ReceivedselectedCategoryID] ="selectCateID" (OnTotalPriceChanges)="UpdateTotalprice($event)"></app-product-list> -->
+    <app-product-list [ReceivedselectedCategoryID] ="selectCateID" (OnAddToCart)="UpdateCartList($event)" ></app-product-list>
+
 </div>
 <hr>
 
-<h2>Order Total Price : {{receviedOrderTotalPrice | currency}}</h2>
+<hr>
+<table class="table">
+  <thead class="bg-dark text-light">
+    <tr>
+      <th scope="col">No.</th>
+      <th scope="col">Name</th>
+      <th scope="col">Price in USD</th>
+      <th scope="col">Count</th>
+      <th scope="col">Total</th>
+      <th scope="col">Remove</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+        <tr *ngFor="let item of cartList; index as i">
+        <th scope="row">{{item?.id}}</th>
+        <td>{{item?.name}}</td>
+        <td >{{item.price | currency }}</td>
+        <td><input type="number" value="{{item.count}}" #count  (change)="calcTotalForItem(item.id,count.value , item.price)"></td>
+        <td>{{item.total}}</td>
+        <td><button class="btn btn-danger" type="button" (click)="RemoveItem(i)">Remove</button>
+        </td>
+      </tr>
+    <!-- </ng-container> -->
+  </tbody>
+</table>
+<h2>Order Total Price : {{OrderTotalPrice | currency}}</h2>
+

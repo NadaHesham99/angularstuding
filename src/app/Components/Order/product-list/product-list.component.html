@@ -18,6 +18,7 @@
       <th scope="col">AV.Quantity</th>
       <th scope="col">Price in USD</th>
       <th scope="col">Price in EGY</th>
+      <th scope="col">Details</th>
       <th scope="col">Count</th>
       <th scope="col">Buy</th>
     </tr>
@@ -55,10 +56,12 @@
         <td>{{item.price | uSDtoEGY }}</td>
         <!-- <td>{{item.price | currency :'EUR'}}</td> -->
         <!-- #countQuantity temp variable -->
+        <!-- <td><button class="btn btn-success" type="button" (click)="openProductDetails(item.id)">Details</button> </td>-->
+        <td><a class="btn btn-success" role="button" [routerLink]="['/Products',item.id]">Details</a></td>
+
         <td><input class="form-control" type="number" #countQuantity></td> 
         <!-- <td><button class="btn btn-primary" type="button" (click)="buy(item.price , countQuantity.value)">Buy</button> -->
-        <td><button class="btn btn-primary" type="button" (click)="buy(item.price , countQuantity.value)">Add to cart</button>
-        </td>
+        <td><button class="btn btn-primary" type="button" (click)="buy(item.id,item.name,item.price , countQuantity.value)">Add to cart</button></td>
       </tr>
     <!-- </ng-container> -->
   </tbody>
@@ -66,3 +69,5 @@
 
 <!-- <hr>
 <h3>Total Order Price : {{OrderTotalPrice |currency}}</h3> -->
+
+

@@ -1,0 +1,16 @@
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" [src]="this.currentPrd.imageURL" alt="Card image cap">
+    <div class="card-body">
+      <h2 class="card-title">Product Name : {{this.currentPrd.name}}</h2>
+      <div class="card-text">
+        <h4>Product Price : {{this.currentPrd.price}}</h4>
+        <h4>Product Quantity : {{this.currentPrd.quantity}}</h4>
+      </div>
+      <div class="btn-group btn-group" role="group" aria-label="...">
+        <button [disabled]="isFirstItem()" class="btn btn-success" (click)="PreviousProduct()">Previous</button>
+        <button class="btn btn-primary" (click)="goBack()">Go Back</button>
+        <button [disabled]="isLastItem()" class="btn btn-success" (click)="NextProduct()">Next</button>
+      </div>
+      <!-- <button class="btn btn-primary" (click)="goBack()">Go Back</button> -->
+    </div>
+  </div>

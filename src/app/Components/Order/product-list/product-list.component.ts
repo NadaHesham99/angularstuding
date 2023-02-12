@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
+import { Cart } from 'src/app/Models/cart';
 import { ICategory } from 'src/app/Models/icategory';
 import { IProduct } from 'src/app/Models/iproduct';
+import { ProductsService } from 'src/app/Services/products.service';
 
 @Component({
   selector: 'app-product-list',
@@ -8,27 +11,24 @@ import { IProduct } from 'src/app/Models/iproduct';
   styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit , OnChanges{
-  private prodList:IProduct[];
+  //private prodList:IProduct[];
   prdCatList :IProduct[] =[];
   //catList:ICategory[];
   //selectedCategoryID:number=0;
   OrderTotalPrice:number = 0;
   @Output() OnTotalPriceChanges : EventEmitter<number>;
  
+ @Output() OnAddToCart : EventEmitter<Cart>;
+
   @Input() ReceivedselectedCategoryID:number=0;
 
 
 
-  constructor() { 
+  constructor(private prdService:ProductsService,
+              private router:Router) { 
     this.OnTotalPriceChanges = new EventEmitter<number>();
-    this.prodList = [
-      {id:100,name:'Lenevo ThinqPad Laptop' , price:100000000,quantity:3,imageURL:'https://fakeimg.pl/200x100/',categoryId:1},
-      {id:200,name:'HP Laptop' , price:6040505050,quantity:0,imageURL:'https://fakeimg.pl/200x100/',categoryId:1},
-      {id:300,name:'DELL Laptop' , price:743500500,quantity:10,imageURL:'https://fakeimg.pl/200x100/',categoryId:2},
-      {id:400,name:'MAC Book' , price:800000000,quantity:2,imageURL:'https://fakeimg.pl/200x100/',categoryId:2},
-      {id:500,name:'Lenevo Tab2' , price:503030500,quantity:0,imageURL:'https://fakeimg.pl/200x100/',categoryId:3},
-      {id:600,name:'MAC Tablet' , price:20400500,quantity:1,imageURL:'https://fakeimg.pl/200x100/',categoryId:3}
-    ]
+    this.OnAddToCart = new EventEmitter<Cart>();
+    this.prdCatList = this.prdService.getAllProducts();
     // this.catList=[
     //   {id:1 , name:"Laptops"},
     //   {id:2, name:"Tablet"},
@@ -36,23 +36,35 @@ export class ProductListComponent implements OnInit , OnChanges{
     // ]
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if(this.ReceivedselectedCategoryID == 0){
-      this.prdCatList = this.prodList
-    }
-    else{
-      this.prdCatList = this.prodList.filter(prd=> prd.categoryId == this.ReceivedselectedCategoryID);
-    }
+   console.log(this.ReceivedselectedCategoryID)
+    // if(this.ReceivedselectedCategoryID == 0){
+    //   this.prdCatList = this.prodList
+    // }
+    // else{
+    //   this.prdCatList = this.prodList.filter(prd=> prd.categoryId == this.ReceivedselectedCategoryID);
+    // }
+   this.prdCatList =  this.prdService.getProductsByCatId(this.ReceivedselectedCategoryID);
   }
 
   ngOnInit(): void {
+    this.prdCatList =this.prdService.getProductsByCatId(this.ReceivedselectedCategoryID);
   }
-  buy(prdPrice:any , count:any){
-    //let itemCount:number = +count; //to convert count of type any to type number
+  buy(prditem:any,prdName:any,prdPrice:any , count:any){
+    let itemCount:number = +count; //to convert count of type any to type number
     this.OrderTotalPrice = +prdPrice * +count;
-
+    const CartObj = new Cart();
+    CartObj.id = prditem;
+    CartObj.name = prdName;
+    CartObj.price = prdPrice;
+    CartObj.count = count;
+    CartObj.total = (CartObj.count?CartObj.count:0) * (CartObj.price?CartObj.price:0);
     this.OnTotalPriceChanges.emit(this.OrderTotalPrice);
+    this.OnAddToCart.emit(CartObj);
   }
   prdTrackByFn(index:number , prd:IProduct):number{
     return prd.id;
+  }
+  openProductDetails(prdId:number){
+    this.router.navigate(['/Products',prdId])
   }
 }
